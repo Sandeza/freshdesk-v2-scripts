@@ -11,7 +11,7 @@ def lambda_handler(event, context):
 
     tabl = dynamo.Table('caller_data')
 
-    response = tabl.scan(FilterExpression=Attr("agentIdentifier").eq(event["agentIdentifier"]))
+    response = tabl.scan(FilterExpression=Attr("agentIdentifier").eq(event["agentIdentifier"])) # To get the results from dynamo db
     
     print(response)
     return {

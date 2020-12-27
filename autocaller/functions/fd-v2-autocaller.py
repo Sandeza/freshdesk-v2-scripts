@@ -12,7 +12,7 @@ table = client.Table("caller_data")
 
 def connect_outbound_api(data):
     
-    try:
+    try: #call is placed here
         response = connect_client.start_outbound_voice_contact(
         DestinationPhoneNumber=data["phoneNumber"],
         SourcePhoneNumber="+18336624150",
@@ -42,7 +42,7 @@ def lambda_handler(event, context):
     jobKey =  event["jobKey"]
     
     for val in jobKey:
-        print(val)
+        # To fetch the caller details from the table using Job Key
         response = table.get_item(
     Key={
         "agentIdentifier": agentIdentifier,
@@ -55,6 +55,7 @@ def lambda_handler(event, context):
         call = connect_outbound_api(response['Item'])
         print(call)
         status = "Call Placed" if call.get("error")== None else call.get("error")
+        # Update the status of the call to the table
         table.update_item(
   Key={
     "agentIdentifier": agentIdentifier,
@@ -68,7 +69,7 @@ def lambda_handler(event, context):
     "#ts": "status"
   }
 )
-
+# Updating the contact ID to the table
         table.update_item(
   Key={
  "agentIdentifier": agentIdentifier,
